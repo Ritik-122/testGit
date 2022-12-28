@@ -2,6 +2,18 @@ var subm=document.getElementById('my-form');
 
 var users=document.getElementById('listOfPeople');
 
+window.addEventListener("DOMContentLoaded",()=>{
+    axios.get('https://crudcrud.com/api/9bb290745ddc45ef987f4d1ac5cbf995/appointment')
+    .then(res=>{
+        for (var i=0;i<res.data.length;i++)
+        {
+             showUserOnscreen(res.data[i])
+        }
+    })
+    .catch(err=>console.log(err))
+
+})
+
 
 subm.addEventListener('submit',handleSubmit);
 
@@ -9,27 +21,24 @@ function handleSubmit(e){
     e.preventDefault();
 
     let obj_users={
-        Name:e.target.fname.value,
-        Email:e.target.email.value
+        fname:e.target.fname.value,
+        lname:e.target.lname.value,
+        email:e.target.email.value,
+        phonenumber:e.target.phonenumber.value
     }
-     
-   var edit_button=document.createElement('button');
-   edit_button.appendChild(document.createTextNode('EDIT'));
-    var del_button=document.createElement('button');
-   del_button.appendChild(document.createTextNode('DELETE'));
-
-   axios.post('https://crudcrud.com/api/4dd1d79169de4fe28e5413d863971afe/appointment',obj_users)
+  showUserOnscreen(obj_users)
+ axios.post('https://crudcrud.com/api/9bb290745ddc45ef987f4d1ac5cbf995/appointment',obj_users)
    .then(res=>console.log(res))
    .catch(err=>console.log(err))
 
-   var newUser=document.createElement('li');
-   
+}
 
-    newUser.appendChild(document.createTextNode(e.target.fname.value+" "+e.target.email.value));
+function showUserOnscreen(user){
 
-    newUser.appendChild(edit_button);
-    newUser.appendChild(del_button);
-    users.appendChild(newUser);
-
-
+    childNode=`<li id=${user.email}>${user.fname}-${user.lname}-${user.email}-${user.phonenumber}
+                <button onclick=deleteUser('${user.email}')>DELETE</button>
+                <button onclick=editUser('${user.email}','${user.name}','${user.phonenumber}')>EDIT</button> </li> `
+    
+    users.innerHTML=users.innerHTML+childNode
+                                                                             
 }
