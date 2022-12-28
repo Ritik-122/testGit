@@ -42,3 +42,31 @@ function showUserOnscreen(user){
     users.innerHTML=users.innerHTML+childNode
                                                                              
 }
+
+function deleteUser(d){
+    let c=''
+    axios.get('https://crudcrud.com/api/9bb290745ddc45ef987f4d1ac5cbf995/appointment')
+    .then(res=>{
+        
+        for (var i=0;i<res.data.length;i++)
+        {
+             if (d===res.data[i].email)
+             {
+                c+=(res.data[i]._id);
+                console.log(c);
+             }
+        }
+
+        axios.delete('https://crudcrud.com/api/9bb290745ddc45ef987f4d1ac5cbf995/appointment/'+c)
+       .then(res=>console.log(res))
+       .catch(err=>console.log(err))
+
+    })
+    .catch(err=>console.log(err))
+   
+    elementToremoved=document.getElementById(`${d}`)
+    users.removeChild(elementToremoved)
+    
+    
+
+}
